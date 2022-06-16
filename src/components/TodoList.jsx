@@ -1,5 +1,5 @@
 import { Add } from "@mui/icons-material";
-import { Divider, IconButton, List } from "@mui/material";
+import { Divider, List } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
@@ -21,6 +21,8 @@ function swap(array, source, target) {
   ) {
     //Make a copy
     let newItems = [...array];
+    console.debug("target",array[target])
+    console.debug("source",array[source])
     newItems[source] = array[target];
     newItems[target] = array[source];
     console.debug(newItems);
@@ -61,6 +63,17 @@ function TodoList(props) {
     });
   };
 
+  const moveCallback = (index, target) => {
+    
+      console.debug("Swapping", index, "with", target)
+      console.debug("Before", items)
+      setItems((prevItems) => {
+        return swap(prevItems, index, target);
+      })
+      console.debug("After", items)
+  }
+
+
   const handleAdd = (e) => {
     e.preventDefault();
     const newItem = {
@@ -75,7 +88,6 @@ function TodoList(props) {
   return (
     <Box sx={{ width: "100%", maxWidth: 540, bgcolor: "background.paper" }}>
       <List>
-      <TodoItem id="hello-id" name="test test123" />
         {items.map((todoitem, index) => {
           console.debug(todoitem);
           const canMoveUp = index > 0;
@@ -93,16 +105,10 @@ function TodoList(props) {
               startDate={todoitem.startDate}
               isChecked={todoitem.isChecked}
               key={index}
-              
-              onMoveDownCallback={setItems((prevItems) => {
-                      return swap(prevItems, index, index + 1);
-                    })
+              onMoveDownCallback={(canMoveDown) ? (() => moveCallback(index, index+1)) : false}
+              onMoveUpCallback={(canMoveUp) ? (() => moveCallback(index, index-1)) : false
               }
-              onMoveUpCallback={setItems((prevItems) => {
-                      return swap(prevItems, index, index - 1);
-                    })
-              }
-              onDeleteCallback={setItems((prevItems) => {
+              onDeleteCallback={() => setItems((prevItems) => {
                 return prevItems.filter((element) => {
                   return element.id !== todoitem.id;
                 });
