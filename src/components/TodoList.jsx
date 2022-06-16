@@ -21,8 +21,8 @@ function swap(array, source, target) {
   ) {
     //Make a copy
     let newItems = [...array];
-    console.debug("target",array[target])
-    console.debug("source",array[source])
+    console.debug("target", array[target])
+    console.debug("source", array[source])
     newItems[source] = array[target];
     newItems[target] = array[source];
     console.debug(newItems);
@@ -64,13 +64,12 @@ function TodoList(props) {
   };
 
   const moveCallback = (index, target) => {
-    
-      console.debug("Swapping", index, "with", target)
-      console.debug("Before", items)
-      setItems((prevItems) => {
-        return swap(prevItems, index, target);
-      })
-      console.debug("After", items)
+    console.debug("Swapping", index, "with", target)
+    console.debug("Before", items)
+    setItems((prevItems) => {
+      return swap(prevItems, index, target);
+    })
+    console.debug("After", items)
   }
 
 
@@ -82,14 +81,13 @@ function TodoList(props) {
       startDate: null,
       isChecked: false,
     };
-    setItems((prevItems)=>{return [...prevItems, newItem]});
+    setItems((prevItems) => { return [...prevItems, newItem] });
     console.debug("Adding", newItem);
   };
   return (
     <Box sx={{ width: "100%", maxWidth: 540, bgcolor: "background.paper" }}>
       <List>
         {items.map((todoitem, index) => {
-          console.debug(todoitem);
           const canMoveUp = index > 0;
           const canMoveDown = index < items.length - 1;
           /*<div key={index} 
@@ -104,9 +102,9 @@ function TodoList(props) {
               name={todoitem.name}
               startDate={todoitem.startDate}
               isChecked={todoitem.isChecked}
-              key={index}
-              onMoveDownCallback={(canMoveDown) ? (() => moveCallback(index, index+1)) : false}
-              onMoveUpCallback={(canMoveUp) ? (() => moveCallback(index, index-1)) : false
+              key={todoitem.id}
+              onMoveDownCallback={(canMoveDown) ? (() => moveCallback(index, index + 1)) : false}
+              onMoveUpCallback={(canMoveUp) ? (() => moveCallback(index, index - 1)) : false
               }
               onDeleteCallback={() => setItems((prevItems) => {
                 return prevItems.filter((element) => {
